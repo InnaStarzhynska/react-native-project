@@ -6,8 +6,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { RegistrationScreen } from "./Components/RegistrationScreen";
-import { LoginScreen } from "./Components/LoginScreen"
+import  RegistrationScreen  from "./Components/RegistrationScreen";
+import  LoginScreen  from "./Components/LoginScreen"
 
 export default function App() {
   return (

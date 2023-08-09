@@ -1,5 +1,5 @@
 
-export function PostsScreen() {
+export default function PostsScreen() {
   return (
     <div>PostsScreen</div>
   )

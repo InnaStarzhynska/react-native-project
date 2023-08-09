@@ -1,24 +1,45 @@
 import { useState } from "react";
 import {
+  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  Pressable
 } from "react-native";
 
-export function RegistrationScreen() {
+export default function RegistrationScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [onFocusEmail, setFocusEmail] = useState(false);
   const [onFocusPassword, setFocusPassword] = useState(false);
-  const [passwordShown, setPasswordShown] = useState(false)
+  const [passwordShown, setPasswordShown] = useState(false);
+
+  const isDisabled = !email || !password;
+
+  const handleSubmit = () => {
+    const userLoginInfo = { email, password };
+    console.log(userLoginInfo);
+    setEmail('');
+    setPassword('') 
+  }
 
   return (
     <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        style={styles.keyboard}
+        keyboardVerticalOffset={Platform.select({
+          ios: () => 0,
+          android: () => 400,
+        })()}>
       <View style={styles.form}>
         <Text style={styles.title} textAlign="center">
           Увійти
         </Text>
-        <TextInput
+          <TextInput
+            value={email}
           style={{
             ...styles.input,
             borderColor: onFocusEmail ? "#FF6C00" : "#000",
@@ -30,9 +51,11 @@ export function RegistrationScreen() {
           }}
           onBlur={() => {
             setFocusEmail(false);
-          }}
+            }}
+            onChangeText={setEmail}
         />
-        <TextInput
+          <TextInput
+            value={password}
           style={{
             ...styles.lastInput,
             borderColor: onFocusPassword ? "#FF6C00" : "#000",
@@ -40,11 +63,12 @@ export function RegistrationScreen() {
           secureTextEntry={passwordShown ? true : false}
           placeholder="Пароль"
           onFocus={() => { setFocusPassword(true) }}
-          onBlur={() => {setFocusPassword(false)}}
+            onBlur={() => { setFocusPassword(false) }}
+            onChangeText={setPassword}
         />
-        <TouchableOpacity style={styles.button}>
+          <Pressable disabled={ isDisabled} style={{ ...styles.button, backgroundColor: isDisabled ? "#D3D3D3" : "#FF6C00" } } onPress={handleSubmit}>
           <Text style={styles.buttonText}>Увійти</Text>
-        </TouchableOpacity>
+        </Pressable>
         <TouchableOpacity>
           <Text style={styles.linkText}>
             Немає акаунту? {""}
@@ -55,6 +79,7 @@ export function RegistrationScreen() {
           <Text style={styles.btnText} onPress={() => setPasswordShown(!passwordShown)}> {!passwordShown ? 'Приховати' : 'Показати'}</Text>
         </TouchableOpacity>
       </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -97,7 +122,6 @@ const styles = StyleSheet.create({
   button: {
     display: "flex",
     height: 51,
-    backgroundColor: "#FF6C00",
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
