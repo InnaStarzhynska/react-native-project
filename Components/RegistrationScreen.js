@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   Image,
@@ -9,6 +10,7 @@ import {
   View,
   Pressable
 } from "react-native";
+import SaveAreaContainer from "./ScreenContainer";
 
 export default function RegistrationScreen() {
   const [login, setLogin] = useState('');
@@ -18,17 +20,21 @@ export default function RegistrationScreen() {
   const [onFocusEmail, setFocusEmail] = useState(false);
   const [onFocusPassword, setFocusPassword] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
+  const navigation = useNavigation();
 
   const isDisabled = !login || !email || !password;
+
   const handleSubmit = () => {
     const userRegisterInfo = { login, email, password };
     console.log(userRegisterInfo);
     setLogin('');
     setEmail('');
-    setPassword('') 
+    setPassword('');
+    navigation.navigate('Home')
   }
 
   return (
+    <SaveAreaContainer>
     <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -37,7 +43,7 @@ export default function RegistrationScreen() {
           ios: () => 0,
           android: () => 230,
         })()}
-      >
+        >
         <View style={styles.wrapper}>
           <Image style={styles.image} resizeMode="contain" />
           <TouchableOpacity style={styles.btnAdd}>
@@ -98,7 +104,7 @@ export default function RegistrationScreen() {
           <Pressable disabled={isDisabled} style={{ ...styles.button, backgroundColor: isDisabled ? "#D3D3D3" : "#FF6C00" } } activeOpacity={0.3} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Зареєструватися</Text>
           </Pressable>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{navigation.navigate('Login')}}>
             <Text style={styles.linkText}>Вже є акаунт? Увійти</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnPassword}>
@@ -113,6 +119,7 @@ export default function RegistrationScreen() {
         </View>
       </KeyboardAvoidingView>
     </View>
+              </SaveAreaContainer>
   );
 }
 

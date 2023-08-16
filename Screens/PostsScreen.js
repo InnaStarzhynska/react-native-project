@@ -1,6 +1,8 @@
+import {  Text  } from "react-native";
 
 export default function PostsScreen() {
   return (
-    <div>PostsScreen</div>
-  )
+            <Text>Posts screen</Text>
+  );
 }
+
