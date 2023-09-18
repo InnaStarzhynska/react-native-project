@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   Pressable,
+  Keyboard,
 } from "react-native";
 import SaveAreaContainer from "./ScreenContainer";
 
@@ -17,6 +18,7 @@ export default function RegistrationScreen() {
   const [onFocusEmail, setFocusEmail] = useState(false);
   const [onFocusPassword, setFocusPassword] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
+  const [isKeyboardShown, setIsKeyboardShown] = useState(false);
   const navigation = useNavigation();
 
   const isDisabled = !email || !password;
@@ -26,13 +28,15 @@ export default function RegistrationScreen() {
     console.log(userLoginInfo);
     setEmail("");
     setPassword("");
+    setIsKeyboardShown(false);
+    Keyboard.dismiss();
     navigation.navigate("Home");
   };
 
   return (
-    <SaveAreaContainer>
+    <SaveAreaContainer isKeyboardShown={setIsKeyboardShown}>
       <View style={styles.container}>
-        <View style={styles.form}>
+        <View style={{...styles.form, marginBottom: isKeyboardShown ? 90 : 0}}>
           <Text style={styles.title} textAlign="center">
             Увійти
           </Text>
@@ -46,6 +50,7 @@ export default function RegistrationScreen() {
             placeholder="Адреса електронної пошти"
             onFocus={() => {
               setFocusEmail(true);
+              setIsKeyboardShown(true)
             }}
             onBlur={() => {
               setFocusEmail(false);
@@ -62,6 +67,7 @@ export default function RegistrationScreen() {
             placeholder="Пароль"
             onFocus={() => {
               setFocusPassword(true);
+               setIsKeyboardShown(true)
             }}
             onBlur={() => {
               setFocusPassword(false);

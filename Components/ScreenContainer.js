@@ -7,10 +7,14 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-export default function SaveAreaContainer({ children }) {
+export default function SaveAreaContainer({ children, isKeyboardShown }) {
+  const keyboardHide = () => {
+    isKeyboardShown(false);
+    Keyboard.dismiss()
+  }
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={keyboardHide}>
         <View style={styles.view}>
           <ImageBackground
             source={require("../Images/ImageBackground.jpg")}

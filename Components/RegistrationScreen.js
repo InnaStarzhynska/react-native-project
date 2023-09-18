@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -8,7 +8,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Pressable
+  Pressable,
+  Keyboard
 } from "react-native";
 import SaveAreaContainer from "./ScreenContainer";
 
@@ -20,9 +21,11 @@ export default function RegistrationScreen() {
   const [onFocusEmail, setFocusEmail] = useState(false);
   const [onFocusPassword, setFocusPassword] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
+  const [isKeyboardShown, setIsKeyboardShown] = useState(false);
   const navigation = useNavigation();
 
   const isDisabled = !login || !email || !password;
+
 
   const handleSubmit = () => {
     const userRegisterInfo = { login, email, password };
@@ -30,19 +33,17 @@ export default function RegistrationScreen() {
     setLogin('');
     setEmail('');
     setPassword('');
+    setIsKeyboardShown(false);
+    Keyboard.dismiss();
     navigation.navigate('Home')
   }
 
   return (
-    <SaveAreaContainer>
+    <SaveAreaContainer isKeyboardShown={setIsKeyboardShown}>
     <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.keyboard}
-        keyboardVerticalOffset={Platform.select({
-          ios: () => 0,
-          android: () => 230,
-        })()}
         >
         <View style={styles.wrapper}>
           <Image style={styles.image} resizeMode="contain" />
@@ -50,7 +51,7 @@ export default function RegistrationScreen() {
             <Text style={styles.btnAddIcon}>+</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.form}>
+          <View style={{ ...styles.form, marginBottom: isKeyboardShown ? 150 : 0}}>
           <Text style={styles.title} textAlign="center">
             Реєстрація
           </Text>
@@ -63,6 +64,7 @@ export default function RegistrationScreen() {
             placeholder="Логін"
             onFocus={() => {
               setFocusLogin(true);
+              setIsKeyboardShown(true)
             }}
             onBlur={() => {
               setFocusLogin(false);
@@ -79,6 +81,7 @@ export default function RegistrationScreen() {
             placeholder="Адреса електронної пошти"
             onFocus={() => {
               setFocusEmail(true);
+              setIsKeyboardShown(true)
             }}
             onBlur={() => {
               setFocusEmail(false);
@@ -95,6 +98,7 @@ export default function RegistrationScreen() {
             placeholder="Пароль"
             onFocus={() => {
               setFocusPassword(true);
+              setIsKeyboardShown(true)
             }}
             onBlur={() => {
               setFocusPassword(false);
